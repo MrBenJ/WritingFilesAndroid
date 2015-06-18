@@ -41,7 +41,21 @@ public class textAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.text_listview, null);
+
+            holder = new ViewHolder();
+            holder.text = (TextView) convertView.findViewById(R.id.listText);
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        holder.text.setText(mList.get(position));
+        return convertView;
     }
 
     static class ViewHolder {
