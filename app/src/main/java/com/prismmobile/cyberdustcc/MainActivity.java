@@ -20,6 +20,9 @@ public class MainActivity extends ActionBarActivity {
 
     List<String> noteList = new ArrayList<String>();
     EditText textInput;
+    static TextAdapter adapter;
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +31,16 @@ public class MainActivity extends ActionBarActivity {
 
         Button submitButton = (Button) findViewById(R.id.submit);
         textInput = (EditText) findViewById(R.id.textInput);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Submit button clicked");
                 noteList.add(textInput.getText().toString());
+
+                adapter = new TextAdapter(MainActivity.this, noteList);
+                listView.setAdapter(adapter);
             }
         });
 
