@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,28 +64,36 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Pick an option")
                        .setItems(R.array.options, new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
                                switch(which) {
-                                   
+
                                    // EDIT
                                    case 0:
+                                       //Start editText Activity
+
+
                                        break;
                                    // DELETE
                                    case 1:
+                                       noteList.remove(position);
+                                       adapter.notifyDataSetChanged();
                                        break;
                                    // SHARE
                                    case 2:
+                                       //Start share Intent
                                        break;
 
                                }
                            }
                        })
                        .create();
+                builder.show();
                 return false;
             }
         });
