@@ -33,6 +33,8 @@ public class TextAdapter extends BaseAdapter {
         return mList.get(position);
     }
 
+
+    // Probably won't be using this...
     @Override
     public long getItemId(int position) {
         return 0;

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -32,21 +33,30 @@ public class MainActivity extends ActionBarActivity {
         Button submitButton = (Button) findViewById(R.id.submit);
         textInput = (EditText) findViewById(R.id.textInput);
         listView = (ListView) findViewById(R.id.listView);
-
+        adapter = new TextAdapter(this, noteList);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Submit button clicked");
                 noteList.add(textInput.getText().toString());
+                textInput.setText("");
+            }
+        });
+        listView.setAdapter(adapter);
 
-                adapter = new TextAdapter(MainActivity.this, noteList);
-                listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             }
         });
 
-        //TODO: Create the adapter
-        // listView.setAdapter();
-
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
 
     }
 
