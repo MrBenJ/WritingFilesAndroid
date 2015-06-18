@@ -118,7 +118,9 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
 
     @Override
     public void OnSubmit(String text, int position) {
-
+        fragmentManager.popBackStack();
+        noteList.set(position, text);
+        adapter.notifyDataSetChanged();
     }
 
 

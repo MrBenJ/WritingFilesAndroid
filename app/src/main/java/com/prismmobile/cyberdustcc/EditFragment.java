@@ -23,6 +23,7 @@ public class EditFragment extends Fragment {
         Button submit = (Button) v.findViewById(R.id.submit_change_text);
         changeText.setText(getArguments().getString("text"));
         submit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 mCallback.OnSubmit(changeText.getText().toString(), getArguments().getInt("position"));
