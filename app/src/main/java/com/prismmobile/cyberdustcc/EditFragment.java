@@ -22,6 +22,7 @@ public class EditFragment extends Fragment {
         final EditText changeText = (EditText) v.findViewById(R.id.changeText);
         Button submit = (Button) v.findViewById(R.id.submit_change_text);
         changeText.setText(getArguments().getString("text"));
+        changeText.requestFocus();
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -33,6 +34,7 @@ public class EditFragment extends Fragment {
 
         return v;
     }
+
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);

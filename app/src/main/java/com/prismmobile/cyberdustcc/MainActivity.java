@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
     TextAdapter adapter;
     ListView listView;
     FragmentManager fragmentManager;
+    Button submitButton;
 
 
 
@@ -43,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         fragmentManager = getSupportFragmentManager();
 
         final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        Button submitButton = (Button) findViewById(R.id.submit);
+        submitButton = (Button) findViewById(R.id.submit);
         textInput = (EditText) findViewById(R.id.textInput);
         listView = (ListView) findViewById(R.id.listView);
         adapter = new TextAdapter(this, noteList);
@@ -51,9 +52,12 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check to make sure field is not blank
+                if(!textInput.getText().toString().equals("")) {
+                    noteList.add(textInput.getText().toString());
+                    textInput.setText("");
+                }
 
-                noteList.add(textInput.getText().toString());
-                textInput.setText("");
             }
         });
         listView.setAdapter(adapter);
@@ -91,6 +95,7 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
                                                .add(R.id.fragment_container, editFragment)
                                                .addToBackStack(EditFragment.class.getSimpleName())
                                                .commit();
+                                       submitButton.setVisibility(View.INVISIBLE);
 
 
                                        break;
@@ -121,6 +126,21 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         fragmentManager.popBackStack();
         noteList.set(position, text);
         adapter.notifyDataSetChanged();
+        submitButton.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if(count == 0) {
+            submitButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            getSupportFragmentManager().popBackStack();
+        }
     }
 
 
