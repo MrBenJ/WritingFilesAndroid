@@ -40,6 +40,8 @@ public class TextAdapter extends BaseAdapter {
         return 0;
     }
 
+    // I used the ViewHolder trick to recycle views if there are lots of them.
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;

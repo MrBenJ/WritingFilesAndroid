@@ -41,8 +41,6 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
     FragmentManager fragmentManager;
     Button submitButton;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +52,12 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         textInput = (EditText) findViewById(R.id.textInput);
         listView = (ListView) findViewById(R.id.listView);
 
+        /**
+         * This block of code checks is there's a file called "list" on the system in private
+         * storage. If there isn't, it will just use a blank ArrayList<String>
+         */
         FileInputStream fileInputStream;
+
         try {
             fileInputStream = openFileInput("list");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -79,6 +82,7 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         });
         listView.setAdapter(adapter);
 
+        // OnClickListener for bringing up the alertDialog with options
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,14 +117,14 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
                                                .addToBackStack(EditFragment.class.getSimpleName())
                                                .commit();
                                        submitButton.setVisibility(View.INVISIBLE);
-
-
                                        break;
+
                                    // DELETE
                                    case 1:
                                        noteList.remove(position);
                                        adapter.notifyDataSetChanged();
                                        break;
+
                                    // SHARE
                                    case 2:
                                        //Start share Intent
