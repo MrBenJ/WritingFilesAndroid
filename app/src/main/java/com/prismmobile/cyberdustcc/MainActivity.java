@@ -24,8 +24,7 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements EditCallback{
-
-    private final static String TAG = MainActivity.class.getSimpleName();
+    
 
     List<String> noteList = new ArrayList<>();
     EditText textInput;
@@ -107,6 +106,11 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
                                    // SHARE
                                    case 2:
                                        //Start share Intent
+                                       Intent sendIntent = new Intent();
+                                       sendIntent.setAction(Intent.ACTION_SEND);
+                                       sendIntent.putExtra(Intent.EXTRA_TEXT, noteList.get(position));
+                                       sendIntent.setType("text/plain");
+                                       startActivity(sendIntent);
                                        break;
 
                                }
