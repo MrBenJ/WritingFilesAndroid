@@ -19,20 +19,27 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements EditCallback{
-    
 
-    List<String> noteList = new ArrayList<>();
+
+    ArrayList<String> noteList = new ArrayList<>();
     EditText textInput;
     TextAdapter adapter;
     ListView listView;
     FragmentManager fragmentManager;
     Button submitButton;
-
 
 
 
@@ -46,6 +53,17 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         submitButton = (Button) findViewById(R.id.submit);
         textInput = (EditText) findViewById(R.id.textInput);
         listView = (ListView) findViewById(R.id.listView);
+
+        FileInputStream fileInputStream;
+        try {
+            fileInputStream = openFileInput("list");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            noteList = (ArrayList<String>) objectInputStream.readObject();
+            objectInputStream.close();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
         adapter = new TextAdapter(this, noteList);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +144,24 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("TAG", "WRITING!");
+        try {
+            FileOutputStream fileOutputStream = this.openFileOutput("list", Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(noteList);
+            oos.close();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    @Override
     public void OnSubmit(String text, int position) {
         fragmentManager.popBackStack();
         noteList.set(position, text);
@@ -133,7 +169,9 @@ public class MainActivity extends ActionBarActivity implements EditCallback{
         submitButton.setVisibility(View.VISIBLE);
     }
 
-
+    // This is for Lollipop - There's a weird bug where buttons get placed on top of fragments
+    // that are on top of other views. I had to override the back button in order to accomodate
+    // this
     @Override
     public void onBackPressed() {
         super.onBackPressed();
