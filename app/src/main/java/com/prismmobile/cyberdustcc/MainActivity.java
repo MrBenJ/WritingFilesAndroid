@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements EditCallback{
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
@@ -30,12 +31,16 @@ public class MainActivity extends ActionBarActivity {
     EditText textInput;
     TextAdapter adapter;
     ListView listView;
+    FragmentManager fragmentManager;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentManager = getSupportFragmentManager();
 
         final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         Button submitButton = (Button) findViewById(R.id.submit);
@@ -75,7 +80,17 @@ public class MainActivity extends ActionBarActivity {
 
                                    // EDIT
                                    case 0:
-                                       //Start editText Activity
+                                       Bundle bundle = new Bundle();
+                                       bundle.putInt("position", position);
+                                       bundle.putString("text", noteList.get(position));
+                                       EditFragment editFragment = new EditFragment();
+                                       editFragment.setArguments(bundle);
+                                       fragmentManager.beginTransaction()
+                                               .setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom,
+                                                                    R.anim.enter_from_bottom, R.anim.exit_to_bottom)
+                                               .add(R.id.fragment_container, editFragment)
+                                               .addToBackStack(EditFragment.class.getSimpleName())
+                                               .commit();
 
 
                                        break;
@@ -94,11 +109,19 @@ public class MainActivity extends ActionBarActivity {
                        })
                        .create();
                 builder.show();
-                return false;
+                return true;
             }
         });
 
+
     }
+
+    @Override
+    public void OnSubmit(String text, int position) {
+
+    }
+
+
 
 
 
