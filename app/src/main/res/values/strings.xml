@@ -4,4 +4,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="submit">Submit</string>
+    <string name="text_copied">Text Copied!</string>
+    <string name="simple_text">simple text</string>
+    <string-array name="options">
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Share</item>
+    </string-array>
 </resources>
